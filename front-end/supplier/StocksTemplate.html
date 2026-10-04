@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <title>Supplier Stocks </title>
+</head>
+<a href="/supplier/dashboard">Dashboard</a>
+<body>
+    
+    {% if message %}
+    <div id="message">
+       {{message}}
+       <button onclick="close_alert()" >ok </button>
+    </div>
+    {%endif%}
+
+    <h1>Supplier Stock</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Part Name</th>
+                <th>Cost Price</th>
+                <th>Reference</th>
+                <th>Brand</th>
+                <th>Quantity</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for stock in stocks %}
+            <tr>
+                <td>{{stock.part_name}}</td>
+                <td>{{stock.cost_price}}</td>
+                <td>{{stock.refernce}}</td>
+                <td>{{stock.brand}}<td>
+                <td>{{stock.quantity}}</td>
+            </tr>
+            {%endfor%}
+        </tbody>
+    </table>
+    <p>Add New Stock ? <a href="/supplier/add_stock">Stock Form</a></p>
+
+
+
+    <script>
+        function close_alert(){
+            document.getElementById("message").style.display="none"
+        }
+    </script>
+
+    
+</body>
+</html>

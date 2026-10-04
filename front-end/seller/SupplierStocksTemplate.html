@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Supplier Stocks</title>
+</head>
+<body>
+{% if message or error_message %}
+<div id="alert">
+    <p>
+        {{ message or error_message }}
+    </p>
+    <button type="button" onclick="close_alert()">OK</button>
+</div>
+{% endif %}
+  
+
+    
+
+    <table>
+        <thead>
+            <tr>
+                <th>Part Name</th>
+                <th>Cost Price</th>
+                <th>Reference</th>
+                <th>Brand</th>
+                <th>Quantity</th>
+                <th>More Operations</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for stock in stocks %}
+            <tr >
+                <td>{{ stock.part_name }}</td>
+                <td>{{ stock.cost_price }}</td>
+                <td>{{ stock.refernce }}</td>
+                <td>{{ stock.brand }}</td>
+                {% if stock.quantity < 0 %}
+                <td>Stock epuise </td>
+                {% endif %}
+                {% if stock.quantity > 0 %}
+                <td>{{ stock.quantity }}</td>
+                <td>
+                    
+                    <form action="/seller/add_request?stock_id={{stock.id}}" method="post">
+                        Qte:<input type="number"
+                        name="quantity"
+                        max="{{ stock.quantity }}">
+                        <button type="submit"> Send Request </button>
+                    </form>
+                </td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+   
+
+
+    
+
+
+
+
+
+    Supplier Informations:
+    Informations: {{supplier.first_name}} {{supplier.last_name}}
+    Email: {{supplier.email}}
+
+</body>
+<script>
+    function close_alert(){
+        document.getElementById("alert").style.display="none"
+    }
+</script>
+
+</html>

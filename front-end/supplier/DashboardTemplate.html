@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <title>Dashbpoard</title>
+    <a href="/supplier/dashboard">Visit Dashboard</a>
+    <a href="/supplier/logout">Logout</a>
+</head>
+<body>
+    
+    <nav>
+        <ul>
+            <li><a href="/supplier/logout">Logout</a></li>
+            <li><a href="/supplier/stocks">Stock</a></li>
+             <li><a href="/supplier/requests">Supply Requests</a></li>
+        </ul>
+    </nav>
+    <h1>Welcome {{supplier.first_name}} {{supplier.last_name}} to your dashboard</h1>
+
+    <h1>Stock</h1>
+    <h2>You have {{stock_length}} different Stocks</h2>
+    <h1>you have {{requests_length}} requests </h1>
+
+</body>
+</html>

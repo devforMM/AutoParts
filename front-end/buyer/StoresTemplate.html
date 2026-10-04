@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <title> Stores</title>
+</head>
+<body>
+  
+    <table>
+        <thead>
+            <tr>
+                <th>Store Name</th>
+                <th>Brand Group</th>
+                <th>Store Adress</th>
+                <th>Phone Number</th>
+                <th>Store Products </th>
+            </tr>
+        </thead>
+        <tbody>
+           {% for store in stores %}
+           <tr>
+            <td>{{store.name}}</td>
+            <td>{{store.brand_group}}</td>
+            <td>{{store.adress}}</td>
+            <td>{{store.phone_number}}</td>
+            <td><a href="/buyer/store_details?store_id={{store.id}}">Store Details</a></td>
+           </tr>
+           {% endfor %}
+        </tbody>
+    </table>
+
+
+
+</body>
+</html>

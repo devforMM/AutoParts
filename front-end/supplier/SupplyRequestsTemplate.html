@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supply Requests</title>
+    <li><a href="/supplier/dashboard">Dashboard</a></li>
+</head>
+<body>
+      <div id="alert" style="display: none;">
+        <p id="alert_msg"></p>
+        <button onclick="close_alert()">Ok</button>
+      </div>
+      <h1>All Supply requests</h1>
+      <table>
+        <thead>
+            <tr>
+                <th>Request ID</th>
+                <th>Request Date </th>
+                <th> Request Status</th>
+                <th>Request Informations</th>
+                <th>Seller ID </th>
+                <th>More Operations</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for request in requests%} 
+        <tr id="request_{{request.id}}"> 
+        <td >{{request.id}}</td>
+        <td>{{request.date}}</td>
+        <td id="status_{{request.id}}">{{request.status}}</td>
+        <td>{{request.informations}}</td>
+        <td>{{request.seller_id}}</td>
+
+        <td>{% if request.status=="pending" %}
+            <button onclick="validate_request({{request.id}})">Validate Request</button>
+            {% endif %}    
+            <button onclick="delete_request({{request.id}})">Delete Request</button>
+        </td>
+        </tr>
+        {% endfor %}
+    
+    
+    </tbody>
+      </table>
+    <script>
+        async function delete_request(request_id) {
+
+            try{
+                const reponse= await fetch(
+                    `/supplier/delete_request?id_request=${request_id}`,
+                    {method:"DELETE"}
+
+                )
+                const data= await reponse.json()
+                show_alert(data.message)
+                const row=document.getElementById(`request_${request_id}`)
+                
+                row.remove()
+
+                if(!reponse.ok){
+                 show_alert(data.message)
+                }
+
+            }catch(error){
+                show_alert("error while deleting the request: "+error.message)
+            }
+            
+            
+
+            
+        }
+        async function validate_request(request_id) {
+
+            try{
+                const reponse=await fetch(
+                    `/supplier/validate_request?id_request=${request_id}`,
+                    {method:"POST"}
+                )
+                const data= await reponse.json()
+                show_alert(data.message)  
+                document.getElementById(`status_${request_id}`).innerText="valid"
+                if (!reponse.ok){
+                    show_alert(data.message)
+                }
+
+            }
+            catch(error)
+            {
+                show_alert("error while validating the request: "+ error.message)
+            }
+            
+                        
+            
+            
+
+            
+        }
+
+        function close_alert(){
+            document.getElementById("alert").style.display="none"
+        }
+        function show_alert(message){
+            document.getElementById("alert").style.display="block"
+            document.getElementById("alert_msg").innerText=message
+        }
+    </script>
+</body>
+</html>

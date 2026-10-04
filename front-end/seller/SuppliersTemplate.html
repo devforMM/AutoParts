@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <title>Suppliers</title>
+    <li>
+        <a href="/seller/dashboard">dashboard</a>
+    </li>
+</head>
+<body>
+    All Suppliers
+    <table>
+        <thead>
+            <tr>
+                <th>Supplier Informations</th>
+                <th>Supplier Email</th>
+                <th>Supplier Stocks</th>
+                <th>Supplier Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for supplier in suppliers %}
+            <tr>
+                <td>{{supplier.first_name}} {{supplier.last_name}}</td>
+                <td>{{supplier.email}}</td>
+                <td>{{supplier.stocks | length  }}</td>
+                <td><a href="/seller/supplier_stocks?supplier_id={{supplier.id}}">Supplier stocks</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+</body>
+</html>

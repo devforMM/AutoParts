@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <ul>
+        <li><a href="/seller/stores">Stores</a></li>
+    </ul>
+    <title>Create Store</title>
+</head>
+<body>
+    {% if message_error %}
+    <div id="alert">
+        {{message_error}}
+        <button onclick="close_alert()">OK</button>
+
+    </div>
+
+
+    {% endif %}
+
+    
+    <form action="/seller/create_store" method="post">
+        Store Name: <input type="text" name="name"><br><br>
+        Brand Group: <input type="text" name="brand_group"><br><br>
+        Adress: <input type="text" name="adress"><br><br>
+        Phone Number <input type="text" name="phone_number"><br><br>
+        <button type="submit"> Create Store</button>
+    </form>
+</body>
+<script>
+    function close_alert(){
+        document.getElementById("alert").style.display="none"
+    }
+</script>
+</html>

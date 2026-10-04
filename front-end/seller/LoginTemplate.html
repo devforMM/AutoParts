@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Seller</title>
+</head>
+ Seller Login
+<body>
+    {% if message %}
+
+    <div id="message">
+        {{message}}
+        <button onclick="close_alert()">Ok</button>
+        
+    </div>
+
+    {% endif %}
+    <form action="/seller/login" method="post">
+        Email : <input type="text" name="email"><br><br>
+        Password : <input type="password" name="password"><br><br>
+        <button type="submit">Login</button>
+    </form>
+    <p>Dont have an account? <a href="/seller/register">Register</a></p>
+    
+</body>
+<script>
+    function close_alert(){
+        document.getElementById("message").style.display="none"
+    }
+</script>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <title>Sales</title>
+</head>
+<body>
+    <table>
+        <thead>
+            <th>Date</th>
+            <th>Parts</th>
+            <th>Cost</th>
+            <th>Total</th>
+            <th>Profit</th>
+        </thead>
+        <tbody>
+            {% for sale in sales %}
+            <tr>
+            <td>{{sale.date}}</td>
+            <td>Name: {{ sale.parts[0].name }} Refernce:{{ sale.parts[0].reference }}  Price:Refernce:{{ sale.parts[0].selling_price }}</td>
+            <td>{{sale.cost}}</td>
+            <td>{{sale.total}}</td>
+            <td>{{sale.profit}}</td>
+            </tr>
+            {% endfor %}
+
+        </tbody>
+    </table>
+    
+</body>
+</html>

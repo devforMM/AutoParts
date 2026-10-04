@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<head>
+    <title>Purchases</title>
+    <li>
+        <a href="/buyer/dashboard">Dashboard</a>
+    </li>
+</head>
+<body>
+    Purchases:
+    <table>
+        <thead>
+            <tr>
+            <th>Date</th>
+            <th>ID Purchase</th>
+            <th> Parts</th>
+            <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for purchase in purchases %}
+            <tr>
+                <td>{{purchase.date}}</td>
+                <td>{{purchase.id}}</td>
+                <td>Name: {{ purchase.parts[0].name }} Refernce:{{ purchase.parts[0].reference }}  Price:Refernce:{{ purchase.parts[0].selling_price }}
+                     Store:{{ purchase.parts[0].store }} </td>
+                <td>{{ purchase.total }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+   
+</html>

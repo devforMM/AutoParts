@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supply Requests</title>
+    <li><a href="/supplier/dashboard">Dashboard</a></li>
+</head>
+<body>
+      {% if error_message %}
+      <div id="alert">
+        {{error_message}}
+        <button onclick="close_alert()">Ok</button>
+      </div>
+
+      {% endif %}
+      <h1>All Supply requests</h1>
+      <table>
+        <thead>
+            <tr>
+                <th>Request Date </th>
+                <th> Request Status</th>
+                <th>Request Informations</th>
+                <th>Seller ID </th>
+                <th>More Operations</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for request in requests%} 
+        
+        <tr> 
+        <td>{{request.date}}</td>
+        <td>{{request.status}}</td>
+        <td> Name: {{request.informations[0].stock_name}}  Quantity:{{request.informations[0].quantity}}  Cost:{{request.informations[0].cost}} Brand:{{request.informations[0].stock_brand}} Refernce: {{request.informations[0].stock_refeence}}</td>
+        <td>{{request.seller_id}}</td>
+        
+        {% if request.status=="valid" %}
+        <td>
+            <form action="/seller/complete_request?request_id={{request.id}}" method="post">
+                <td>Seller Stores
+            <select name="store_id">
+                {% for store in stores %}
+                <option value="{{store.id}}">{{store.name}}</option>
+                {% endfor %}
+            </select>
+            <button type="submit">Complete Request</button>
+        </td>
+        {% endif %}
+                
+            </form>
+        </td>
+        </td>
+        </tr>
+        {% endfor %}
+    
+    
+    </tbody>
+      </table>
+    <script>
+       
+       
+                        
+            
+            
+
+
+        function close_alert(){
+            document.getElementById("alert").style.display="none"
+        }
+
+    </script>
+</body>
+</html>
