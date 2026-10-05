@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styles/supplier_styles.css">
     <title>Supply Requests</title>
-    <li><a href="/supplier/dashboard">Dashboard</a></li>
+
 </head>
 <body>
+    <ul>
+        <li><a href="/supplier/dashboard">Dashboard</a></li>
+    </ul>
       <div id="alert" style="display: none;">
         <p id="alert_msg"></p>
         <button onclick="close_alert()">Ok</button>
@@ -29,7 +31,7 @@
         <td >{{request.id}}</td>
         <td>{{request.date}}</td>
         <td id="status_{{request.id}}">{{request.status}}</td>
-        <td>{{request.informations}}</td>
+        <td>Name: {{request.informations[0].stock_name}} Qte: {{request.informations[0].quantity}} Cost: {{request.informations[0].cost}}  Brand: {{request.informations[0].stock_brand}} Ref: {{request.informations[0].stock_refeence}}  </td>
         <td>{{request.seller_id}}</td>
 
         <td>{% if request.status=="pending" %}

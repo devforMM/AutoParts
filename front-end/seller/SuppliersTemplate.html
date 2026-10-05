@@ -1,34 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/styles/seller_styles.css">
     <title>Suppliers</title>
-    <li>
-        <a href="/seller/dashboard">dashboard</a>
-    </li>
 </head>
 <body>
-    All Suppliers
-    <table>
-        <thead>
-            <tr>
-                <th>Supplier Informations</th>
-                <th>Supplier Email</th>
-                <th>Supplier Stocks</th>
-                <th>Supplier Details</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for supplier in suppliers %}
-            <tr>
-                <td>{{supplier.first_name}} {{supplier.last_name}}</td>
-                <td>{{supplier.email}}</td>
-                <td>{{supplier.stocks | length  }}</td>
-                <td><a href="/seller/supplier_stocks?supplier_id={{supplier.id}}">Supplier stocks</a></td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    
+    <header class="topbar">
+        <a class="brand" href="/seller/dashboard">Seller Hub</a>
+        <nav>
+            <a href="/seller/dashboard">Dashboard</a>
+            <a href="/seller/stores">Stores</a>
+            <a href="/seller/requests">Requests</a>
+            <a class="active" href="/seller/suppliers">Suppliers</a>
+            <a class="logout" href="/seller/logout">Logout</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <div class="page-head">
+            <h1 class="page-title">All Suppliers</h1>
+        </div>
+
+        <div class="table-card">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Supplier</th>
+                        <th>Email</th>
+                        <th>Stocks</th>
+                        <th>Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for supplier in suppliers %}
+                    <tr>
+                        <td><strong>{{ supplier.first_name }} {{ supplier.last_name }}</strong></td>
+                        <td>{{ supplier.email }}</td>
+                        <td>{{ supplier.stocks | length }}</td>
+                        <td><a class="btn btn-sm btn-secondary" href="/seller/supplier_stocks?supplier_id={{ supplier.id }}">Supplier Stocks</a></td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td class="empty" colspan="4">No suppliers available.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </main>
 </body>
 </html>

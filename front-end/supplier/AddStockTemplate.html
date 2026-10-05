@@ -1,10 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <a href="/supplier/dashboard">Visit Dashboard</a>
+    <link rel="stylesheet" href="/styles/supplier_styles.css">
+
+
     <title>Add Stock</title>
 </head>
 <body>
+    
+    <ul>
+        <li><a href="/supplier/dashboard">Visit Dashboard</a></li>
+    </ul>
     {% if Error_message %}
     <div id="alert">
         <p> Error: {{Error_message}}</p>

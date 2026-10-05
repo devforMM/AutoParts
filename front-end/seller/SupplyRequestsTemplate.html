@@ -2,72 +2,92 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/styles/seller_styles.css">
     <title>Supply Requests</title>
-    <li><a href="/supplier/dashboard">Dashboard</a></li>
 </head>
 <body>
-      {% if error_message %}
-      <div id="alert">
-        {{error_message}}
-        <button onclick="close_alert()">Ok</button>
-      </div>
+    <header class="topbar">
+        <a class="brand" href="/seller/dashboard">Seller Hub</a>
+        <nav>
+            <a href="/seller/dashboard">Dashboard</a>
+            <a href="/seller/stores">Stores</a>
+            <a class="active" href="/seller/requests">Requests</a>
+            <a href="/seller/suppliers">Suppliers</a>
+            <a class="logout" href="/seller/logout">Logout</a>
+        </nav>
+    </header>
 
-      {% endif %}
-      <h1>All Supply requests</h1>
-      <table>
-        <thead>
-            <tr>
-                <th>Request Date </th>
-                <th> Request Status</th>
-                <th>Request Informations</th>
-                <th>Seller ID </th>
-                <th>More Operations</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for request in requests%} 
-        
-        <tr> 
-        <td>{{request.date}}</td>
-        <td>{{request.status}}</td>
-        <td> Name: {{request.informations[0].stock_name}}  Quantity:{{request.informations[0].quantity}}  Cost:{{request.informations[0].cost}} Brand:{{request.informations[0].stock_brand}} Refernce: {{request.informations[0].stock_refeence}}</td>
-        <td>{{request.seller_id}}</td>
-        
-        {% if request.status=="valid" %}
-        <td>
-            <form action="/seller/complete_request?request_id={{request.id}}" method="post">
-                <td>Seller Stores
-            <select name="store_id">
-                {% for store in stores %}
-                <option value="{{store.id}}">{{store.name}}</option>
-                {% endfor %}
-            </select>
-            <button type="submit">Complete Request</button>
-        </td>
-        {% endif %}
-                
-            </form>
-        </td>
-        </td>
-        </tr>
-        {% endfor %}
-    
-    
-    </tbody>
-      </table>
+    {% if error_message %}
+    <div id="alert" class="alert alert-error" role="alert">
+        <p>{{ error_message }}</p>
+        <button type="button" class="btn btn-sm" onclick="close_alert()">Ok</button>
+    </div>
+    {% endif %}
+
+    <main class="container">
+        <div class="page-head">
+            <h1 class="page-title">All Supply Requests</h1>
+        </div>
+
+        <div class="table-card">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Request Date</th>
+                        <th>Request Status</th>
+                        <th>Request Informations</th>
+                        <th>Seller ID</th>
+                        <th>More Operations</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for request in requests %}
+                    <tr>
+                        <td>{{ request.date }}</td>
+                        <td><span class="badge badge-{{ request.status }}">{{ request.status }}</span></td>
+                        <td>
+                            <ul class="parts-list">
+                                <li><strong>{{ request.informations[0].stock_name }}</strong></li>
+                                <li class="muted">
+                                    Quantity: {{ request.informations[0].quantity }}
+                                    &middot; Cost: {{ request.informations[0].cost }}
+                                    &middot; Brand: {{ request.informations[0].stock_brand }}
+                                    &middot; Reference: {{ request.informations[0].stock_refeence }}
+                                </li>
+                            </ul>
+                        </td>
+                        <td>{{ request.seller_id }}</td>
+                        <td>
+                            {% if request.status == "valid" %}
+                            <form class="inline-form" action="/seller/complete_request?request_id={{ request.id }}" method="post">
+                                <label for="store_{{ request.id }}">Store</label>
+                                <select id="store_{{ request.id }}" name="store_id">
+                                    {% for store in stores %}
+                                    <option value="{{ store.id }}">{{ store.name }}</option>
+                                    {% endfor %}
+                                </select>
+                                <button type="submit" class="btn btn-sm btn-success">Complete Request</button>
+                            </form>
+                            {% else %}
+                            <span class="muted">&mdash;</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td class="empty" colspan="5">You have no supply requests yet.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </main>
+
     <script>
-       
-       
-                        
-            
-            
-
-
-        function close_alert(){
-            document.getElementById("alert").style.display="none"
+        function close_alert() {
+            document.getElementById("alert").style.display = "none";
         }
-
     </script>
 </body>
 </html>

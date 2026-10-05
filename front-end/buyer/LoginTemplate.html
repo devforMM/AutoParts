@@ -2,16 +2,43 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/styles/buyer_styles.css">
+    <title>Login</title>
 </head>
-<body>
-    Login
-    <form action="/buyer/login" method="post">
-        Email:<input type="text" name="email">
-        Password: <input type="text" name="password">
-        <button type="submit">Login</button>
-    </form>
-    <p>Dont have an account <a href="/buyer/register">register</a></p>
+<body class="auth">
+
+    {% if message %}
+    <div id="alert">
+        <p>{{ message }}</p>
+        <button type="button" class="btn btn-primary" onclick="close_alert()">Ok</button>
+    </div>
+    {% endif %}
+
+    <main class="card auth-card">
+        <h1>Welcome back</h1>
+        <p class="auth-sub">Log in to browse stores and follow your purchases.</p>
+
+        <form action="/buyer/login" method="post">
+            <div class="field">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email">
+            </div>
+            <div class="field">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password">
+            </div>
+            <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+
+        <p class="auth-switch">Don't have an account? <a href="/buyer/register">Register</a></p>
+    </main>
+
+    <script>
+        function close_alert() {
+            var a = document.getElementById("alert");
+            if (a) a.style.display = "none";
+        }
+    </script>
 </body>
 </html>

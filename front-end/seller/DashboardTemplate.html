@@ -1,18 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/styles/seller_styles.css">
     <title>Seller Dashboard</title>
-    <h1>View your Requests: <a href="/seller/requests">Requests</a></h1>
-    <h1>Manage your stores your Stores: <a href="/seller/stores">Stores</a></h1>
-    <h1>Visit Suppliers <a href="/seller/suppliers">suppliers</a></h1>
-    <h1>Logout <a href="/seller/logout"></a></h1>
 </head>
 <body>
+    <header class="topbar">
+        <a class="brand" href="/seller/dashboard">Seller Hub</a>
+        <nav>
+            <a class="active" href="/seller/dashboard">Dashboard</a>
+            <a href="/seller/stores">Stores</a>
+            <a href="/seller/requests">Requests</a>
+            <a href="/seller/suppliers">Suppliers</a>
+            <a class="logout" href="/seller/logout">Logout</a>
+        </nav>
+    </header>
 
+    <main class="container">
+        <h1 class="page-title">Welcome {{ seller.first_name }} {{ seller.last_name }}</h1>
+        <p class="page-sub">Here is an overview of your activity.</p>
 
-    <p>Welcome {{seller.first_name}} {{seller.last_name}} To your dashboard</p>
-    <p>You have  to manage {{len_stores}} Stores </p>
-    <p>consult your  {{len_requests}}  requestss </p>
+        <section class="stats" style="margin-top: 28px;">
+            <a class="stat-card" href="/seller/stores">
+                <span class="stat-number">{{ len_stores }}</span>
+                <span class="stat-label">Stores to manage</span>
+                <span class="stat-link">Manage your stores &rarr;</span>
+            </a>
+
+            <a class="stat-card" href="/seller/requests">
+                <span class="stat-number">{{ len_requests }}</span>
+                <span class="stat-label">Supply requests</span>
+                <span class="stat-link">View your requests &rarr;</span>
+            </a>
+
+            <a class="stat-card stat-card-accent" href="/seller/suppliers">
+                <span class="stat-number">+</span>
+                <span class="stat-label">Need new parts? Browse the supplier catalog.</span>
+                <span class="stat-link">Visit suppliers &rarr;</span>
+            </a>
+        </section>
+    </main>
 </body>
 </html>

@@ -1,12 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
+    <link rel="stylesheet" href="/styles/supplier_styles.css">
     <title>Supplier Stocks </title>
-</head>
-<a href="/supplier/dashboard">Dashboard</a>
-<body>
     
+
+</head>
+<body>
+    <ul>
+        <li>
+            <a href="/supplier/dashboard">Dashboard</a>
+        </li>
+    </ul>
     {% if message %}
     <div id="message">
        {{message}}
@@ -23,16 +28,18 @@
                 <th>Reference</th>
                 <th>Brand</th>
                 <th>Quantity</th>
+                <th>More</th>
             </tr>
         </thead>
         <tbody>
             {% for stock in stocks %}
             <tr>
                 <td>{{stock.part_name}}</td>
-                <td>{{stock.cost_price}}</td>
-                <td>{{stock.refernce}}</td>
-                <td>{{stock.brand}}<td>
-                <td>{{stock.quantity}}</td>
+            <td>{{stock.cost_price}}</td>
+            <td>{{stock.reference}}</td>
+            <td>{{stock.brand}}</td>
+            <td>{{stock.quantity}}</td>
+            <td><form action="/supplier/delete_stock?stock_id={{stock.id}}" method="post"><button type="submit">Delete Stock</button></form></td>
             </tr>
             {%endfor%}
         </tbody>

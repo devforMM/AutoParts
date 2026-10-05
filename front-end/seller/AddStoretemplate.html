@@ -1,34 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <ul>
-        <li><a href="/seller/stores">Stores</a></li>
-    </ul>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/styles/seller_styles.css">
     <title>Create Store</title>
 </head>
 <body>
+    <header class="topbar">
+        <a class="brand" href="/seller/dashboard">Seller Hub</a>
+        <nav>
+            <a href="/seller/dashboard">Dashboard</a>
+            <a class="active" href="/seller/stores">Stores</a>
+            <a href="/seller/requests">Requests</a>
+            <a href="/seller/suppliers">Suppliers</a>
+            <a class="logout" href="/seller/logout">Logout</a>
+        </nav>
+    </header>
+
     {% if message_error %}
-    <div id="alert">
-        {{message_error}}
-        <button onclick="close_alert()">OK</button>
-
+    <div id="alert" class="alert alert-error" role="alert">
+        <p>{{ message_error }}</p>
+        <button type="button" class="btn btn-sm" onclick="close_alert()">OK</button>
     </div>
-
-
     {% endif %}
 
-    
-    <form action="/seller/create_store" method="post">
-        Store Name: <input type="text" name="name"><br><br>
-        Brand Group: <input type="text" name="brand_group"><br><br>
-        Adress: <input type="text" name="adress"><br><br>
-        Phone Number <input type="text" name="phone_number"><br><br>
-        <button type="submit"> Create Store</button>
-    </form>
+    <main class="container narrow">
+        <div class="page-head">
+            <h1 class="page-title">Create a Store</h1>
+            <a class="btn btn-sm btn-secondary" href="/seller/stores">&larr; Back to stores</a>
+        </div>
+
+        <div class="form-card">
+            <form class="form" action="/seller/create_store" method="post">
+                <label>Store Name
+                    <input type="text" name="name">
+                </label>
+                <label>Brand Group
+                    <input type="text" name="brand_group">
+                </label>
+                <label>Address
+                    <input type="text" name="adress">
+                </label>
+                <label>Phone Number
+                    <input type="text" name="phone_number">
+                </label>
+                <button type="submit" class="btn btn-block">Create Store</button>
+            </form>
+        </div>
+    </main>
+
+    <script>
+        function close_alert() {
+            document.getElementById("alert").style.display = "none";
+        }
+    </script>
 </body>
-<script>
-    function close_alert(){
-        document.getElementById("alert").style.display="none"
-    }
-</script>
 </html>

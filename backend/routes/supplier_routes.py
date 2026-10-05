@@ -9,8 +9,9 @@ from Server.server_utils import get_current_supplier
 from Database.models import SupplyRequest,Stock
 from fastapi import Form
 import traceback
-
 from Server.server_utils import hash_password,verifiy_password,create_token
+
+
 templates=Jinja2Templates(directory="../front-end/supplier")
 supplier_router=APIRouter(tags=["supplier"],prefix="/supplier")
 
@@ -235,7 +236,8 @@ def add_stock(request:Request,part_name=Form(...),quantity=Form(...),cost_price=
             request=request,
             name="StocksTemplate.html",
             context={
-                "message":"stock added successfully"
+                "message":"stock added successfully",
+                "stocks":supplier.stocks
             }
         )
 
@@ -277,6 +279,33 @@ def delete_request(id_request:int,supplier=Depends(get_current_supplier),databas
                 "message":f"error occured in {e}"
             }
    
+
+@supplier_router.post("/delete_stock")
+def delete_part(request:Request,stock_id:int,supplier=Depends(get_current_supplier),database:Session=Depends(get_session)):
+    try:
+ 
+        part=database.query(Stock).filter(Stock.id==stock_id).first()
+        database.delete(part)
+        database.commit()
+        return templates.TemplateResponse(
+            request=request,
+            name="StocksTemplate.html",
+            context={
+                "message":"stock deleted successfully",
+                "stocks":supplier.stocks
+            }
+        )
+
+
+    except Exception as e:
+        return templates.TemplateResponse(
+            name="StocksTemplate.html",
+            request=request,
+            context={
+                "stocks":supplier.stocks,
+                "error_message":f"Error {e} occured "
+            }
+        )
 
 
 @supplier_router.get("/logout")

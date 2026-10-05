@@ -1,78 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/styles/seller_styles.css">
     <title>Supplier Stocks</title>
 </head>
 <body>
-{% if message or error_message %}
-<div id="alert">
-    <p>
-        {{ message or error_message }}
-    </p>
-    <button type="button" onclick="close_alert()">OK</button>
-</div>
-{% endif %}
-  
+    <header class="topbar">
+        <a class="brand" href="/seller/dashboard">Seller Hub</a>
+        <nav>
+            <a href="/seller/dashboard">Dashboard</a>
+            <a href="/seller/stores">Stores</a>
+            <a href="/seller/requests">Requests</a>
+            <a class="active" href="/seller/suppliers">Suppliers</a>
+            <a class="logout" href="/seller/logout">Logout</a>
+        </nav>
+    </header>
 
-    
+    {% if message or error_message %}
+    <div id="alert" class="alert" role="alert">
+        <p>{{ message or error_message }}</p>
+        <button type="button" class="btn btn-sm" onclick="close_alert()">OK</button>
+    </div>
+    {% endif %}
 
-    <table>
-        <thead>
-            <tr>
-                <th>Part Name</th>
-                <th>Cost Price</th>
-                <th>Reference</th>
-                <th>Brand</th>
-                <th>Quantity</th>
-                <th>More Operations</th>
-            </tr>
-        </thead>
+    <main class="container">
+        <div class="page-head">
+            <h1 class="page-title">Stocks of {{ supplier.first_name }} {{ supplier.last_name }}</h1>
+            <a class="btn btn-sm btn-secondary" href="/seller/suppliers">&larr; Back to suppliers</a>
+        </div>
 
-        <tbody>
-            {% for stock in stocks %}
-            <tr >
-                <td>{{ stock.part_name }}</td>
-                <td>{{ stock.cost_price }}</td>
-                <td>{{ stock.refernce }}</td>
-                <td>{{ stock.brand }}</td>
-                {% if stock.quantity < 0 %}
-                <td>Stock epuise </td>
-                {% endif %}
-                {% if stock.quantity > 0 %}
-                <td>{{ stock.quantity }}</td>
-                <td>
-                    
-                    <form action="/seller/add_request?stock_id={{stock.id}}" method="post">
-                        Qte:<input type="number"
-                        name="quantity"
-                        max="{{ stock.quantity }}">
-                        <button type="submit"> Send Request </button>
-                    </form>
-                </td>
-                {% endif %}
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+        <section class="card" style="margin-bottom: 28px;">
+            <dl class="info-grid">
+                <div class="info-item"><dt>Supplier</dt><dd>{{ supplier.first_name }} {{ supplier.last_name }}</dd></div>
+                <div class="info-item"><dt>Email</dt><dd>{{ supplier.email }}</dd></div>
+            </dl>
+        </section>
 
-   
+        <div class="table-card">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Part Name</th>
+                        <th>Cost Price</th>
+                        <th>Reference</th>
+                        <th>Brand</th>
+                        <th>Quantity</th>
+                        <th>More Operations</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for stock in stocks %}
+                    <tr>
+                        <td><strong>{{ stock.part_name }}</strong></td>
+                        <td>{{ stock.cost_price }}</td>
+                        <td>{{ stock.reference }}</td>
+                        <td>{{ stock.brand }}</td>
+                        {% if stock.quantity <= 0 %}
+                        <td><span class="badge badge-out">Out of stock</span></td>
+                        <td class="muted">&mdash;</td>
+                        {% else %}
+                        <td>{{ stock.quantity }}</td>
+                        <td>
+                            <form class="inline-form" action="/seller/add_request?stock_id={{ stock.id }}" method="post">
+                                <label for="qty_{{ stock.id }}">Qty</label>
+                                <input id="qty_{{ stock.id }}" type="number" name="quantity" min="1" max="{{ stock.quantity }}">
+                                <button type="submit" class="btn btn-sm">Send Request</button>
+                            </form>
+                        </td>
+                        {% endif %}
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td class="empty" colspan="6">This supplier has no stock yet.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </main>
 
-
-    
-
-
-
-
-
-    Supplier Informations:
-    Informations: {{supplier.first_name}} {{supplier.last_name}}
-    Email: {{supplier.email}}
-
+    <script>
+        function close_alert() {
+            document.getElementById("alert").style.display = "none";
+        }
+    </script>
 </body>
-<script>
-    function close_alert(){
-        document.getElementById("alert").style.display="none"
-    }
-</script>
-
 </html>

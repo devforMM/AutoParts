@@ -1,15 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
-    <title>Seller Dashboard</title>
-    <h1>visit stores <a href="/buyer/stores">stores</a></h1>
-    <h1>see purchases <a href="/buyer/purchases">purchases</a></h1>
-    <h1>Logout <a href="/buyer/logout"></a></h1>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/styles/buyer_styles.css">
+    <title>Buyer Dashboard</title>
 </head>
 <body>
-    <p>Welcome {{buyer.first_name}} {{buyer.last_name}} To your dashboard</p>
-    <p>Visit  {{len_purchases }} Purchases </p>
-    <p> we have  {{len_stores}}  Stores that you can consult  </p>
+
+    <nav class="navbar">
+        <div class="nav-inner">
+            <a class="brand" href="/buyer/dashboard">AutoParts</a>
+            <div class="nav-links">
+                <a class="active" href="/buyer/dashboard">Dashboard</a>
+                <a href="/buyer/stores">Stores</a>
+                <a href="/buyer/purchases">Purchases</a>
+            </div>
+            <a class="btn btn-danger btn-sm nav-logout" href="/buyer/logout">Logout</a>
+        </div>
+    </nav>
+
+    <main class="container">
+        <header class="page-head">
+            <h1>Welcome {{ buyer.first_name }} {{ buyer.last_name }}</h1>
+            <p>This is your dashboard.</p>
+        </header>
+
+        <section class="stats">
+            <article class="card stat-card">
+                <span class="stat-number">{{ len_purchases }}</span>
+                <span class="stat-label">Purchases</span>
+                <a class="btn btn-primary" href="/buyer/purchases">See purchases</a>
+            </article>
+
+            <article class="card stat-card">
+                <span class="stat-number">{{ len_stores }}</span>
+                <span class="stat-label">Stores you can consult</span>
+                <a class="btn btn-primary" href="/buyer/stores">Visit stores</a>
+            </article>
+        </section>
+    </main>
+
 </body>
 </html>

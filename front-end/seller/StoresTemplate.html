@@ -2,37 +2,58 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/styles/seller_styles.css">
     <title>Seller Stores</title>
 </head>
 <body>
-    
-    <h2>Your Stores</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Store Name</th>
-                <th>Brand Group</th>
-                <th>Store Adress</th>
-                <th>Phone Number</th>
-                <th>More</th>
-            </tr>
-        </thead>
-        <tbody>
-           {% for store in stores %}
-           <tr>
-            <td>{{store.name}}</td>
-            <td>{{store.brand_group}}</td>
-            <td>{{store.adress}}</td>
-            <td>{{store.phone_number}}</td>
-            <td><a href="/seller/store_details?store_id={{store.id}}">Store Details</a></td>
-           </tr>
-           {% endfor %}
-        </tbody>
-    </table>
+    <header class="topbar">
+        <a class="brand" href="/seller/dashboard">Seller Hub</a>
+        <nav>
+            <a href="/seller/dashboard">Dashboard</a>
+            <a class="active" href="/seller/stores">Stores</a>
+            <a href="/seller/requests">Requests</a>
+            <a href="/seller/suppliers">Suppliers</a>
+            <a class="logout" href="/seller/logout">Logout</a>
+        </nav>
+    </header>
 
-    <p>Want to Create New Store? <a href="/seller/add_store">Create Store</a></p>
+    <main class="container">
+        <div class="page-head">
+            <h1 class="page-title">Your Stores</h1>
+            <a class="btn" href="/seller/add_store">+ Create Store</a>
+        </div>
 
-
+        <div class="table-card">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Store Name</th>
+                        <th>Brand Group</th>
+                        <th>Store Address</th>
+                        <th>Phone Number</th>
+                        <th>More Details</th>
+                        <th>Sales</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for store in stores %}
+                    <tr>
+                        <td><strong>{{ store.name }}</strong></td>
+                        <td>{{ store.brand_group }}</td>
+                        <td>{{ store.adress }}</td>
+                        <td>{{ store.phone_number }}</td>
+                        <td><a class="btn btn-sm btn-secondary" href="/seller/store_details?store_id={{ store.id }}">Store Details</a></td>
+                        <td><a class="btn btn-sm" href="/seller/store_sales?store_id={{ store.id }}">Store Sales</a></td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td class="empty" colspan="6">You don't have any store yet.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </main>
 </body>
 </html>

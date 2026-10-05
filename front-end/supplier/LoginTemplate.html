@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
 <head>
     <title>Login </title>
+    <link rel="stylesheet" href="/styles/supplier_styles.css">
 </head>
 <body>
+
     {% if Error_Message %}
         <div id="alert">
        <p>{{Error_Message}}</p>
@@ -12,8 +13,8 @@
     {% endif %}
 
     <form action="/supplier/login" method="post">
-        Email: <input type="text" name="email"><br><br>
-        Password: <input type="text" name="password"><br><br>
+        Email: <input type="email" name="email"><br><br>
+        Password: <input type="password" name="password"><br><br>
         <button type="submit">Login</button>
     </form>
     <p>You Dont Have account <a href="/supplier/register">Register</a></p>

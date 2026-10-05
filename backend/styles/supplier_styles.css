@@ -1,0 +1,390 @@
+/* =========================================================
+   SELLER / SUPPLIER THEME : Dépôt Central de Distribution
+   Palette tirée de l'image : orange rayonnage, bleu acier,
+   béton gris, carton beige, jaune filtre.
+   ========================================================= */
+
+:root {
+    --orange: #e8672a;
+    --orange-dark: #c24f14;
+    --orange-light: #ff8a4c;
+    --steel: #1d3f66;
+    --steel-dark: #12263f;
+    --concrete: #3b3f45;
+    --concrete-dark: #1f2226;
+    --cardboard: #d2a679;
+    --cardboard-light: #f1e3cf;
+    --yellow: #f2b632;
+    --green: #2e9e5b;
+    --red: #c93a2e;
+    --text: #f5efe6;
+    --text-dark: #1f2226;
+    --panel: rgba(18, 24, 32, 0.82);
+    --radius: 10px;
+    --shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+/* ---------- Fond (même image sur toutes les pages) ---------- */
+html {
+    min-height: 100%;
+    background-color: var(--concrete-dark);
+    background-image: url("/images/supplier_background.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+/* Voile sombre pour la lisibilité, sans cacher l'image */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(
+        180deg,
+        rgba(18, 38, 63, 0.55) 0%,
+        rgba(20, 22, 26, 0.72) 100%
+    );
+    pointer-events: none;
+}
+
+body {
+    margin: 0;
+    padding: 24px 20px 60px;
+    min-height: 100vh;
+    font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    color: var(--text);
+    line-height: 1.5;
+}
+
+/* ---------- Titres ---------- */
+h1, h2, h3 {
+    font-family: "Segoe UI", Roboto, Arial, sans-serif;
+    letter-spacing: 0.4px;
+    margin: 0 0 16px;
+}
+
+h1 {
+    font-size: 1.9rem;
+    color: #fff;
+    padding-left: 14px;
+    border-left: 6px solid var(--orange);
+    text-transform: uppercase;
+}
+
+h2 {
+    font-size: 1.2rem;
+    color: var(--cardboard-light);
+    font-weight: 500;
+}
+
+p {
+    margin: 12px 0;
+}
+
+/* ---------- Liens ---------- */
+a {
+    color: var(--yellow);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s ease;
+}
+
+a:hover {
+    color: var(--orange-light);
+    text-decoration: underline;
+}
+
+/* ---------- Navigation ---------- */
+nav,
+body > ul {
+    background: linear-gradient(90deg, var(--steel-dark), var(--steel));
+    border-bottom: 4px solid var(--orange);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    margin-bottom: 28px;
+    padding: 0 12px;
+}
+
+nav ul,
+body > ul {
+    list-style: none;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 8px 12px;
+}
+
+nav li,
+body > ul li {
+    list-style: none;
+}
+
+nav a,
+body > ul a {
+    display: inline-block;
+    padding: 10px 18px;
+    color: #fff;
+    border-radius: 6px;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.8px;
+}
+
+nav a:hover,
+body > ul a:hover {
+    background: var(--orange);
+    color: #fff;
+    text-decoration: none;
+}
+
+/* Le lien Logout ressort un peu */
+nav a[href*="logout"] {
+    background: rgba(201, 58, 46, 0.25);
+}
+
+nav a[href*="logout"]:hover {
+    background: var(--red);
+}
+
+/* ---------- Formulaires (Login / Register / Add Stock) ---------- */
+form {
+    background: var(--panel);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-top: 5px solid var(--orange);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(6px);
+    max-width: 440px;
+    margin: 24px auto;
+    padding: 28px 28px 24px;
+    font-weight: 600;
+    color: var(--cardboard-light);
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"] {
+    display: block;
+    width: 100%;
+    margin-top: 6px;
+    padding: 11px 14px;
+    font-size: 1rem;
+    color: var(--text-dark);
+    background: var(--cardboard-light);
+    border: 2px solid transparent;
+    border-radius: 6px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input:focus {
+    border-color: var(--orange);
+    box-shadow: 0 0 0 3px rgba(232, 103, 42, 0.35);
+}
+
+/* Les <br><br> du HTML font trop d'espace dans les formulaires */
+form br {
+    display: block;
+    content: "";
+    margin-bottom: 4px;
+}
+
+/* ---------- Boutons ---------- */
+button {
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: #fff;
+    background: linear-gradient(180deg, var(--orange-light), var(--orange));
+    border: none;
+    border-radius: 6px;
+    padding: 10px 20px;
+    box-shadow: 0 3px 0 var(--orange-dark);
+    transition: transform 0.1s ease, filter 0.2s ease;
+}
+
+button:hover {
+    filter: brightness(1.1);
+}
+
+button:active {
+    transform: translateY(2px);
+    box-shadow: 0 1px 0 var(--orange-dark);
+}
+
+form button[type="submit"] {
+    width: 100%;
+    margin-top: 6px;
+    padding: 13px;
+}
+
+/* Bouton valider (vert) */
+button[onclick^="validate"] {
+    background: linear-gradient(180deg, #3fbf78, var(--green));
+    box-shadow: 0 3px 0 #1f7a43;
+}
+
+/* Boutons supprimer (rouge) */
+button[onclick^="delete"],
+form[action*="delete"] button {
+    background: linear-gradient(180deg, #e2574a, var(--red));
+    box-shadow: 0 3px 0 #8f2519;
+}
+
+/* Dans les tableaux, les mini-formulaires n'ont pas besoin de carte */
+td form {
+    background: none;
+    border: none;
+    box-shadow: none;
+    backdrop-filter: none;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+    display: inline;
+}
+
+td form button[type="submit"] {
+    width: auto;
+    margin: 0;
+    padding: 8px 14px;
+}
+
+td button {
+    padding: 8px 14px;
+    font-size: 0.78rem;
+    margin: 2px;
+}
+
+/* ---------- Tableaux (Stock / Requests) ---------- */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--panel);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(6px);
+    margin: 16px 0 24px;
+}
+
+thead {
+    background: linear-gradient(90deg, var(--steel-dark), var(--steel));
+}
+
+th {
+    padding: 14px 16px;
+    text-align: left;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--yellow);
+    border-bottom: 3px solid var(--orange);
+}
+
+td {
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    color: var(--text);
+}
+
+tbody tr {
+    transition: background 0.2s ease;
+}
+
+tbody tr:nth-child(even) {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+tbody tr:hover {
+    background: rgba(232, 103, 42, 0.18);
+}
+
+/* Statut des demandes (cellule avec id status_xx) */
+td[id^="status_"] {
+    font-weight: 700;
+    text-transform: capitalize;
+    color: var(--yellow);
+}
+
+/* ---------- Messages / Alertes ---------- */
+#alert,
+#message {
+    position: fixed;
+    top: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    min-width: 280px;
+    max-width: 90vw;
+    padding: 18px 22px;
+    text-align: center;
+    color: var(--text-dark);
+    background: var(--cardboard-light);
+    border-left: 8px solid var(--orange);
+    border-radius: var(--radius);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6);
+    font-weight: 600;
+}
+
+#alert p,
+#message p {
+    margin: 0 0 12px;
+}
+
+#alert button,
+#message button {
+    padding: 7px 20px;
+}
+
+/* ---------- Page Dashboard : cartes de résumé ---------- */
+body > h1 + h1,
+body > h2 {
+    margin-top: 8px;
+}
+
+/* ---------- Texte sous formulaires ---------- */
+form + p {
+    text-align: center;
+    background: var(--panel);
+    max-width: 440px;
+    margin: 0 auto;
+    padding: 12px;
+    border-radius: var(--radius);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 768px) {
+    body {
+        padding: 14px 10px 40px;
+    }
+
+    h1 {
+        font-size: 1.4rem;
+    }
+
+    nav ul,
+    body > ul {
+        flex-direction: column;
+    }
+
+    form {
+        padding: 20px 16px;
+    }
+
+    table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+}

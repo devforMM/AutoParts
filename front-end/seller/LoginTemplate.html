@@ -2,31 +2,40 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/styles/seller_styles.css">
     <title>Login Seller</title>
 </head>
- Seller Login
-<body>
+<body class="auth">
     {% if message %}
-
-    <div id="message">
-        {{message}}
-        <button onclick="close_alert()">Ok</button>
-        
+    <div id="message" class="alert alert-error" role="alert">
+        <p>{{ message }}</p>
+        <button type="button" class="btn btn-sm" onclick="close_alert()">Ok</button>
     </div>
-
     {% endif %}
-    <form action="/seller/login" method="post">
-        Email : <input type="text" name="email"><br><br>
-        Password : <input type="password" name="password"><br><br>
-        <button type="submit">Login</button>
-    </form>
-    <p>Dont have an account? <a href="/seller/register">Register</a></p>
-    
+
+    <main class="auth-card">
+        <div class="auth-brand">Seller Hub</div>
+        <h1>Seller Login</h1>
+        <p class="subtitle">Sign in to manage your stores</p>
+
+        <form class="form" action="/seller/login" method="post">
+            <label>Email
+                <input type="email" name="email">
+            </label>
+            <label>Password
+                <input type="password" name="password">
+            </label>
+            <button type="submit" class="btn btn-block">Login</button>
+        </form>
+
+        <p class="auth-footer">Don't have an account? <a href="/seller/register">Register</a></p>
+    </main>
+
+    <script>
+        function close_alert() {
+            document.getElementById("message").style.display = "none";
+        }
+    </script>
 </body>
-<script>
-    function close_alert(){
-        document.getElementById("message").style.display="none"
-    }
-</script>
 </html>

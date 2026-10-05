@@ -2,133 +2,129 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/styles/seller_styles.css">
     <title>Store Details</title>
 </head>
-<li>
-    <a href="/seller/dashboard">Dashboard</a>
-</li>
 <body>
-{% if message or error_message %}
-<div id="alert">
-    <p>
-        {{ message or error_message }}
-    </p>
-    <button type="button" onclick="close_alert()">OK</button>
-</div>
-{% endif %}
+    <header class="topbar">
+        <a class="brand" href="/seller/dashboard">Seller Hub</a>
+        <nav>
+            <a href="/seller/dashboard">Dashboard</a>
+            <a class="active" href="/seller/stores">Stores</a>
+            <a href="/seller/requests">Requests</a>
+            <a href="/seller/suppliers">Suppliers</a>
+            <a class="logout" href="/seller/logout">Logout</a>
+        </nav>
+    </header>
 
-Store Parts:
+    {% if message or error_message %}
+    <div id="alert" class="alert" role="alert">
+        <p>{{ message or error_message }}</p>
+        <button type="button" class="btn btn-sm" onclick="close_alert()">OK</button>
+    </div>
+    {% endif %}
 
-<table>
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Brand</th>
-            <th>Reference</th>
-            <th>Quantity</th>
-            <th>Cost Price</th>
-            <th>Selling Price</th>
-            <th>Compatible Vehicles</th>
-            <th>Image</th>
-            <th>More</th>
-        </tr>
-    </thead>
+    <main class="container">
+        <div class="page-head">
+            <h1 class="page-title">{{ store.name }}</h1>
+            <a class="btn" href="/seller/store_sales?store_id={{ store.id }}">View Sales</a>
+        </div>
 
-    <tbody>
-        {% for part in parts %}
-        <tr>
-            <td>{{ part.name }}</td>
-            <td>{{ part.brand }}</td>
-            <td>{{ part.reference }}</td>
-            <td>{{ part.quantity }}</td>
-            <td>{{ part.cost_price }}</td>
-            <td>{{ part.selling_price }}</td>
-            <td>{{ part.compatible_vehicles }}</td>
+        <!-- Informations du store -->
+        <section class="card">
+            {% if store.brand_image_path %}
+            <img class="brand-banner" src="/{{ store.brand_image_path }}" alt="{{ store.name }}">
+            {% else %}
+            <form class="inline-form" style="margin-bottom: 20px;" action="/seller/add_brand_image?store_id={{ store.id }}" method="post" enctype="multipart/form-data">
+                <label for="brand_image">Store image</label>
+                <input id="brand_image" type="file" name="image_file">
+                <button type="submit" class="btn btn-sm btn-secondary">Upload</button>
+            </form>
+            {% endif %}
 
-            <td>
-                <img
-                    src="/parts/part_{{ part.id }}"
-                    alt="{{ part.name }}"
-                    width="100"
-                >
-            </td>
+            <dl class="info-grid">
+                <div class="info-item"><dt>Store Name</dt><dd>{{ store.name }}</dd></div>
+                <div class="info-item"><dt>Brand Group</dt><dd>{{ store.brand_group }}</dd></div>
+                <div class="info-item"><dt>Address</dt><dd>{{ store.adress }}</dd></div>
+                <div class="info-item"><dt>Phone Number</dt><dd>{{ store.phone_number }}</dd></div>
+            </dl>
+        </section>
 
-            <td>
-                {% if not part.compatible_vehicles and not part.selling_price %}
-                <form action="/seller/update_part?part_id={{part.id}}" method="post">
-                    <input
-                        type="hidden"
-                        name="part_id"
-                        value="{{ part.id }}"
-                    >
+        <!-- Pièces du store -->
+        <h2 class="section-title">Parts in this store</h2>
+        <div class="table-card">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Brand</th>
+                        <th>Reference</th>
+                        <th>Quantity</th>
+                        <th>Cost Price</th>
+                        <th>Selling Price</th>
+                        <th>Compatible Vehicles</th>
+                        <th>Image</th>
+                        <th>More</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for part in parts %}
+                    <tr>
+                        <td><strong>{{ part.name }}</strong></td>
+                        <td>{{ part.brand }}</td>
+                        <td>{{ part.reference }}</td>
+                        <td>{{ part.quantity }}</td>
+                        <td>{{ part.cost_price }}</td>
+                        <td>{{ part.selling_price }}</td>
+                        <td>{{ part.compatible_vehicles }}</td>
 
-                    Selling Price:
-                    <input
-                        type="number"
-                        name="selling_price"
-                        min="0"
-                        step="0.01"
-                        required
-                    >
+                        {% if part.image_path %}
+                        <td><img class="thumb" src="/{{ part.image_path }}" alt="{{ part.name }}" ></td>
+                        {% else %}
+                        <td>
+                            <form class="inline-form stack" action="/seller/add_part_image?part_id={{ part.id }}&store_id={{ store.id }}" method="post" enctype="multipart/form-data">
+                                <input type="file" name="image_file">
+                                <button type="submit" class="btn btn-sm btn-secondary">Upload Image</button>
+                            </form>
+                        </td>
+                        {% endif %}
 
-                    <br>
+                        <td>
+                            <div class="cell-actions">
+                                {% if not part.compatible_vehicles and not part.selling_price %}
+                                <form class="inline-form stack" action="/seller/update_part?part_id={{ part.id }}" method="post">
+                                    <input type="hidden" name="part_id" value="{{ part.id }}">
+                                    <label>Selling Price
+                                        <input type="number" name="selling_price" min="0" step="0.01" required>
+                                    </label>
+                                    <label>Compatible Vehicles
+                                        <input type="text" name="compatible_vehicles" required>
+                                    </label>
+                                    <button type="submit" class="btn btn-sm btn-success">Update</button>
+                                </form>
+                                {% endif %}
 
-                    Compatible Vehicles:
-                    <input
-                        type="text"
-                        name="compatible_vehicles"
-                        required
-                    >
-
-                    <br>
-
-                    <button type="submit">Update</button>
-                </form>
-                {% endif %}
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-```
-
-
-
-
-    Store Sales:
-    <table>
-        <thead>
-            <tr>
-            <th>Date</th>
-            <th>Parts Sold</th>
-            <th>Sale ID</th>
-            <th>More</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for sale in sales %}
-            <tr>
-                <td>{{sale.date}}</td>
-                <td>{{sale.id}}</td>
-                <td>{{ sale.parts | length }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-
-    <p>Store Informations:</p>
-    <p>Store Name: {{store.name}}</p>
-    <p>Store Brand Group: {{store.brand_group}}</p>
-    <p>Store Adress : {{store.adress}}</p>
-    <p>Store Phone Number: {{store.phone_number}}</p>    
-</body>
+                                <form action="/seller/delete_part?part_id={{ part.id }}" method="post" onsubmit="return confirm('Delete this part?');">
+                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td class="empty" colspan="9">No parts in this store yet.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </main>
 
     <script>
-       
-        function close_alert(){
-            document.getElementById("alert").style.display="none"
+        function close_alert() {
+            document.getElementById("alert").style.display = "none";
         }
-
     </script>
+</body>
 </html>

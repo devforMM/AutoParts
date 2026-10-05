@@ -6,6 +6,8 @@ from fastapi.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.requests import Request
 from fastapi import Form
+import os
+from fastapi import UploadFile,File
 from Server.server_utils import get_current_seller
 from fastapi.exceptions import HTTPException
 from datetime import datetime
@@ -177,6 +179,26 @@ def stores_template(request:Request,seller=Depends(get_current_seller)):
 
 
 
+@seller_router.get("/store_sales")
+def sales_template(request:Request,store_id:int,seller=Depends(get_current_seller),database:Session=Depends(get_session)):
+    try:
+        store=database.query(Store).filter(Store.id==store_id).first()
+        
+        return templates.TemplateResponse(
+            name="SalesTemplate.html",
+            request=request,
+            context={
+                "sales":seller.stores,
+                "store":store
+            }
+        )
+
+
+    except Exception as e:
+        raise HTTPException(detail=f"Server Error: {e}",status_code=400)
+
+
+
 
 
 @seller_router.get("/add_store")
@@ -313,6 +335,8 @@ def add_request(request:Request,stock_id:int,quantity:int=Form(...),
         request_informations.append(
                     {"stock_id":stock.id,"stock_name":stock.part_name,"quantity":quantity,"cost":stock.quantity*quantity,"stock_brand":stock.brand,"stock_refeence":stock.reference}
                 )
+
+                                
         new_request=SupplyRequest(
             date=datetime.today().strftime("%Y-%m-%d"),
             status="pending",
@@ -417,6 +441,113 @@ def update_part(request:Request,part_id:int,selling_price=Form(...),compatible_v
 
 
 
+@seller_router.post("/add_brand_image")
+async def brand_image(request:Request,store_id:int,image_file:UploadFile=File(),database:Session=Depends(get_session),seller=Depends(get_current_seller)):
+    try:
+        os.makedirs(f"./images/store-{store_id}",exist_ok=True)
+        store=database.query(Store).filter(Store.id==store_id).first()
+        data= await image_file.read()
+        
+        with open(f"./images/store-{store_id}/brand_image.png","wb") as target_image:
+            target_image.write(data)
+        store.brand_image_path=f"./images/store-{store_id}/brand_image.png"
+        database.commit()
+        return templates.TemplateResponse(
+            request=request,
+                        name="StoreDetailsTemplate.html",
+                        context={
+                            "sales":store.sales,
+                            "store":store,
+                            "parts":store.parts,
+                            "messsage":"Brand Image added succesfully"
+                        }
+
+        )
+    except Exception as e:
+        return templates.TemplateResponse(
+            request=request,
+            name="StoreDetailsTemplate.html",
+            context={
+                "error_message":f"Error {repr(e)} occured",
+                "sales":store.sales,
+                "store":store,
+                "parts":store.parts
+            }
+                
+            
+        )
+
+
+
+@seller_router.post("/add_part_image")
+async def part_image(request:Request,store_id:int,part_id:int,image_file:UploadFile=File(),database:Session=Depends(get_session),seller=Depends(get_current_seller)):
+    try:
+        os.makedirs(f"./images/store-{store_id}/parts/",exist_ok=True)
+        store=database.query(Store).filter(Store.id==store_id).first()
+        part=database.query(Part).filter(Part.id==part_id).first()
+        image_content= await image_file.read()
+        with open(f"./images/store-{store_id}/parts/part-{part_id}.png","wb") as file:
+            file.write(image_content)
+        part.image_path=f"./images/store-{store_id}/parts/part-{part_id}.png"
+        database.commit()
+        return templates.TemplateResponse(
+                    request=request,
+                    name="StoreDetailsTemplate.html",
+                                context={
+                                    "sales":store.sales,
+                                    "store":store,
+                                    "parts":store.parts,
+                                    "messsage":"Image part added succesfully"
+                                }
+        
+        )
+
+
+
+
+    except Exception as e:
+        return templates.TemplateResponse(
+            name="StoreDetailsTemplate.html",
+            request=request,
+            context={
+                            "error_message":f"Error {repr(e)} occured",
+                            "sales":store.sales,
+                            "store":store,
+                            "parts":store.parts
+                        }
+        )
+
+
+@seller_router.post("/delete_part")
+def delete_part(request:Request,part_id:int,seller=Depends(get_current_seller),database:Session=Depends(get_session)):
+    try:
+ 
+        part=database.query(Part).filter(Part.id==part_id).first()
+        store=part.store
+        database.delete(part)
+        database.commit()
+        return templates.TemplateResponse(
+                        name="StoreDetailsTemplate.html",
+                        request=request,
+                        context={
+                            "message":"Part deleted succesfully",
+                            "store":store,
+                            "parts":store.parts,
+                            "sales":store.sales
+                        }
+                    )
+
+    except Exception as e:
+        return templates.TemplateResponse(
+                                name="StoreDetailsTemplate.html",
+                                request=request,
+                                context={
+                                    "message":f"Error {repr(e)} occured ",
+                                    "store":store,
+                                    "parts":store.parts,
+                                    "sales":store.sales,
+                                }
+                            )
 
 @seller_router.get("/logout")
 def logout(request:Request,seller=Depends(get_current_seller)):

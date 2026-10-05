@@ -2,20 +2,49 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/styles/seller_styles.css">
     <title>Register Seller</title>
 </head>
-<body>
-    
-    <form action="/seller/register" method="post">
-    First Name: <input type="text" name="first_name"><br><br>
-    Last Name: <input type="text" name="last_name"><br><br>
-    Email: <input type="text" name="email"><br><br>
-    Password: <input type="text" name="password"><br><br>
-    Phone Number: <input type="text" name="phone_number"><br><br>
-    <button type="submit">Register</button>
-    </form>
-    <p>Already have Account? <a href="/seller/login">Login</a></p>
-    
+<body class="auth">
+    {% if message %}
+    <div id="message" class="alert alert-error" role="alert">
+        <p>{{ message }}</p>
+        <button type="button" class="btn btn-sm" onclick="close_alert()">Ok</button>
+    </div>
+    {% endif %}
+
+    <main class="auth-card">
+        <div class="auth-brand">Seller Hub</div>
+        <h1>Create your seller account</h1>
+        <p class="subtitle">Start managing your stores today</p>
+
+        <form class="form" action="/seller/register" method="post">
+            <label>First Name
+                <input type="text" name="first_name">
+            </label>
+            <label>Last Name
+                <input type="text" name="last_name">
+            </label>
+            <label>Email
+                <input type="email" name="email">
+            </label>
+            <label>Password
+                <input type="password" name="password">
+            </label>
+            <label>Phone Number
+                <input type="text" name="phone_number">
+            </label>
+            <button type="submit" class="btn btn-block">Register</button>
+        </form>
+
+        <p class="auth-footer">Already have an account? <a href="/seller/login">Login</a></p>
+    </main>
+
+    <script>
+        function close_alert() {
+            document.getElementById("message").style.display = "none";
+        }
+    </script>
 </body>
 </html>

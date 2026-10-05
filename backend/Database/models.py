@@ -40,7 +40,7 @@ class Sale(Base):
     date=Column(Text,nullable=False)
     buyer_id=Column(Integer,ForeignKey("buyer.id"))
     seller_id=Column(Integer,ForeignKey("seller.id"))
-    parts=Column(JSON,nullable=False)
+    parts_infos=Column(JSON,nullable=False)
     cost=Column(Float,nullable=False)
     total=Column(Float,nullable=False)
     profit=Column(Float,nullable=False)
@@ -107,6 +107,7 @@ class Store(Base):
     __tablename__="store"
     id=Column(Integer,autoincrement=True,primary_key=True)
     brand_group=Column(Text,nullable=False)
+    brand_image_path=Column(Text,nullable=True)
     name=Column(Text,nullable=False,unique=True)
     adress=Column(Text,nullable=False)
     phone_number=Column(Text,nullable=False)
