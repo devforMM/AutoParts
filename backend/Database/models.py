@@ -1,11 +1,11 @@
 from sqlalchemy import Column,Integer,Text,ForeignKey,Float,JSON
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import relationship
-from Database.Database import Base,engine
+from Database import base,engine,test_engine
 
 
 
-class Buyer(Base):
+class Buyer(base):
     __tablename__="buyer"
     id=Column(Integer,primary_key=True,autoincrement=True)
     first_name=Column(Text,nullable=False)
@@ -19,7 +19,7 @@ class Buyer(Base):
 
 
 
-class Purchase(Base):
+class Purchase(base):
     __tablename__="purchase"
     id=Column(Integer,primary_key=True)
     date=Column(Text,nullable=False)
@@ -34,7 +34,7 @@ class Purchase(Base):
 
 
 
-class Sale(Base):
+class Sale(base):
     __tablename__="sale"
     id=Column(Integer,primary_key=True)
     date=Column(Text,nullable=False)
@@ -55,7 +55,7 @@ class Sale(Base):
 
 
 
-class Seller(Base):
+class Seller(base):
     __tablename__="seller"
     id=Column(Integer,primary_key=True,autoincrement=True)
     first_name=Column(Text,nullable=False)
@@ -75,7 +75,7 @@ class Seller(Base):
 
 
 
-class Part(Base):
+class Part(base):
     __tablename__="part"
     id=Column(Integer,primary_key=True,unique=True,autoincrement=True)
     name=Column(Text,nullable=False)
@@ -103,7 +103,7 @@ class Part(Base):
     
 
 
-class Store(Base):
+class Store(base):
     __tablename__="store"
     id=Column(Integer,autoincrement=True,primary_key=True)
     brand_group=Column(Text,nullable=False)
@@ -127,7 +127,7 @@ class Store(Base):
 
 
 
-class Supplier(Base):
+class Supplier(base):
     __tablename__="supplier"
     id=Column(Integer,primary_key=True,autoincrement=True)
     first_name=Column(Text,nullable=False)
@@ -140,7 +140,7 @@ class Supplier(Base):
 
 
 
-class Stock(Base):
+class Stock(base):
     __tablename__="stock"
     id=Column(Integer,primary_key=True,nullable=False,autoincrement=True)
     part_name=Column(Text,nullable=False)
@@ -156,7 +156,7 @@ class Stock(Base):
 
 
 
-class SupplyRequest(Base):
+class SupplyRequest(base):
     __tablename__="supplyrequest"
     id=Column(Integer,primary_key=True,nullable=False,autoincrement=True)
     date=Column(Text,nullable=False)
@@ -174,19 +174,8 @@ class SupplyRequest(Base):
 
 
 
+base.metadata.create_all(bind=test_engine)
+base.metadata.create_all(bind=engine)
 
-
-
-
-
-
-
-
-
-
-
-
-
-Base.metadata.create_all(bind=engine)
 
 
